@@ -36,6 +36,7 @@ public class RetrieveActivityListView extends AppCompatActivity {
                 DBHelper db = new DBHelper(RetrieveActivityListView.this);
                 ArrayList<Note> getNote = db.getNotesInObjects();
                 db.close();
+                aa.clear();
                 aa.addAll(getNote);
                 aa.notifyDataSetChanged();
 

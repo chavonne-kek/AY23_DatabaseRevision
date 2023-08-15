@@ -32,7 +32,7 @@ public class RetrieveActivityTextView extends AppCompatActivity {
                 String txt = "";
                 for (int i = 0; i < data.size(); i++) {
 //                    Log.d("Database Content", i +". "+data.get(i));
-                    txt += i + ". " + data.get(i) + "\n";
+                    txt += (i+1) + ". " + data.get(i) + "\n";
                 }
                 tvResults.setText(txt);
 
