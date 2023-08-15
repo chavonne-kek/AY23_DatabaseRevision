@@ -62,7 +62,8 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 //data retrieval in String
-                tasks.add(cursor.getString(1));
+
+                tasks.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
 
