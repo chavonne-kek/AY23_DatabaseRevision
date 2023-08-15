@@ -3,6 +3,7 @@ package com.myapplicationdev.databaserevision;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -25,7 +26,15 @@ public class RetrieveActivityTextView extends AppCompatActivity {
         btnGetNotes.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                DBHelper db = new DBHelper(RetrieveActivityTextView.this);
+                ArrayList<String> data = db.getNotesInStrings();
+                db.close();
+                String txt = "";
+                for (int i = 0; i < data.size(); i++) {
+//                    Log.d("Database Content", i +". "+data.get(i));
+                    txt += i + ". " + data.get(i) + "\n";
+                }
+                tvResults.setText(txt);
 
 
 
