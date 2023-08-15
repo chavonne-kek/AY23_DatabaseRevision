@@ -13,19 +13,19 @@
         android:id="@+id/btnInsertRecord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Insert Record" />
+        android:text="@string/insert_record" />
 
     <Button
         android:id="@+id/btnGetRecord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Get Records" />
+        android:text="@string/get_records" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnRetrieveRecord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="@string/retrieve_records" />
 
 
 </LinearLayout>
