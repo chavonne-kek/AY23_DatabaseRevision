@@ -2,6 +2,7 @@ package com.myapplicationdev.databaserevision;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +36,7 @@ public class InsertActivity extends AppCompatActivity {
 
                 db.insertTask(etContent.getText().toString(),Integer.parseInt(etPriority.getText().toString()));
                 db.close();
+                finish();
             }
         });
 
