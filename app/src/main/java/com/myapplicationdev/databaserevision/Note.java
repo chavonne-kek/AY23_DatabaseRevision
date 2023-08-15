@@ -5,9 +5,9 @@ import androidx.annotation.NonNull;
 public class Note {
     private int id;
     private String content;
-    private String priority;
+    private int priority;
 
-    public Note(int id, String content, String priority) {
+    public Note(int id, String content, int priority) {
         this.id = id;
         this.content = content;
         this.priority = priority;
@@ -29,11 +29,11 @@ public class Note {
         this.content = content;
     }
 
-    public String getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
