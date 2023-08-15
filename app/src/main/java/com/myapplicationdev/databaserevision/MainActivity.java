@@ -21,28 +21,19 @@ public class MainActivity extends AppCompatActivity {
         btnRetrieveRecordsTV = findViewById(R.id.btnGetRecord);
         btnRetrieveRecordsLV = findViewById(R.id.btnRetrieveRecord);
 
-        btnInsertRecord.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, InsertActivity.class);
-                startActivity(intent);
-            }
+        btnInsertRecord.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, InsertActivity.class);
+            startActivity(intent);
         });
 
-        btnRetrieveRecordsTV.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RetrieveActivityTextView.class);
-                startActivity(intent);
-            }
+        btnRetrieveRecordsTV.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, RetrieveActivityTextView.class);
+            startActivity(intent);
         });
 
-        btnRetrieveRecordsLV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RetrieveActivityListView.class);
-                startActivity(intent);
-            }
+        btnRetrieveRecordsLV.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, RetrieveActivityListView.class);
+            startActivity(intent);
         });
 
     }
