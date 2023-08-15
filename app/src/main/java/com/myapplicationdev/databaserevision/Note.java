@@ -40,6 +40,6 @@ public class Note {
     @NonNull
     @Override
     public String toString() {
-        return id + ", " +  content + ", " + priority;
+        return "id: " + id + " content " +  content + " priority " + priority;
     }
 }
