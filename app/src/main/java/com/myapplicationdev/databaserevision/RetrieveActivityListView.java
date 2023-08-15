@@ -1,11 +1,17 @@
 package com.myapplicationdev.databaserevision;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -42,8 +48,35 @@ public class RetrieveActivityListView extends AppCompatActivity {
 
             }
         });
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                LayoutInflater inflater =
+                        (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View viewDialog = inflater.inflate(R.layout.input_edit, null);
 
+                final EditText etContent = viewDialog.findViewById(R.id.et1);
+                final EditText etNumber = viewDialog.findViewById(R.id.et2);
 
+                AlertDialog.Builder myBuilder = new AlertDialog.Builder(RetrieveActivityListView.this);
+                myBuilder.setView(viewDialog);
+                myBuilder.setTitle("Edit Note");
+
+                myBuilder.setPositiveButton("ENTER", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DBHelper db = new DBHelper(RetrieveActivityListView.this);
+                        String newContent = etContent.getText().toString();
+                        String newNum = etNumber.getText().toString();
+
+                        }
+                });
+
+                myBuilder.setNegativeButton("CANCEL", null);
+                AlertDialog myDialog = myBuilder.create();
+                myDialog.show();
+            }
+        });
         //Option: Implement dialog to edit a record
         //Option: Implement context to delete a record
 
