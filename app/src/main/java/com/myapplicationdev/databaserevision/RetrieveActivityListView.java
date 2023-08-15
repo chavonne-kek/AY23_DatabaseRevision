@@ -2,7 +2,6 @@ package com.myapplicationdev.databaserevision;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 public class RetrieveActivityListView extends AppCompatActivity {
-
     Button btnGetNotes;
-
-    ListView lv;
-    ArrayAdapter<Note> aa;
+    ListView lvNote;
+    ArrayAdapter<Note> adapter;
     ArrayList<Note> al;
 
     @Override
@@ -31,72 +28,70 @@ public class RetrieveActivityListView extends AppCompatActivity {
         setContentView(R.layout.activity_retrieve_lv);
 
         btnGetNotes = findViewById(R.id.btnGetTasks);
-        lv = findViewById(R.id.lv);
+        lvNote = findViewById(R.id.lv);
 
         al = new ArrayList<>();
-        aa = new ArrayAdapter<>(RetrieveActivityListView.this, android.R.layout.simple_list_item_1, al);
-        lv.setAdapter(aa);
+        adapter = new ArrayAdapter<>(RetrieveActivityListView.this, android.R.layout.simple_list_item_1, al);
+        lvNote.setAdapter(adapter);
 
         DBHelper db = new DBHelper(RetrieveActivityListView.this);
-        ArrayList<Note> getNote = db.getNotesInObjects();
+        ArrayList<Note> noteList = db.getNotesInObjects();
         db.close();
-        aa.clear();
-        aa.addAll(getNote);
-        aa.notifyDataSetChanged();
-        btnGetNotes.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                DBHelper db = new DBHelper(RetrieveActivityListView.this);
-                ArrayList<Note> getNote = db.getNotesInObjects();
-                db.close();
-                aa.clear();
-                aa.addAll(getNote);
-                aa.notifyDataSetChanged();
-
-            }
+        al.clear();
+        al.addAll(noteList);
+        adapter.notifyDataSetChanged();
+        btnGetNotes.setOnClickListener(v -> {
+            DBHelper db1 = new DBHelper(RetrieveActivityListView.this);
+            ArrayList<Note> noteList1 = db1.getNotesInObjects();
+            db1.close();
+            al.clear();
+            al.addAll(noteList1);
+            adapter.notifyDataSetChanged();
         });
-        lv.setOnItemClickListener((parent, view, position, id) -> {
-            LayoutInflater inflater =
-                    (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        lvNote.setOnItemClickListener((parent, view, position, id) -> {
+            LayoutInflater inflater = (LayoutInflater) RetrieveActivityListView.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View viewDialog = inflater.inflate(R.layout.input_edit, null);
 
             EditText etContent = viewDialog.findViewById(R.id.et1);
-            etContent.setText(getNote.get(position).getContent());
             EditText etNumber = viewDialog.findViewById(R.id.et2);
-            String priority = Integer.toString(getNote.get(position).getPriority());
+            String priority = Integer.toString(noteList.get(position).getPriority());
+            etContent.setText(noteList.get(position).getContent());
             etNumber.setText(priority);
 
             AlertDialog.Builder myBuilder = new AlertDialog.Builder(RetrieveActivityListView.this);
             myBuilder.setView(viewDialog);
             myBuilder.setTitle("Edit Note");
 
-            myBuilder.setPositiveButton("UPDATE", (dialog, which) -> {
+            myBuilder.setNegativeButton("Update", (dialog, which) -> {
                 String newContent = etContent.getText().toString();
                 int newNum = Integer.parseInt(etNumber.getText().toString());
 
-                db.updateNote(position+1, newContent, newNum);
+                db.updateNote(position + 1, newContent, newNum);
                 db.close();
-                finish();
-                Intent intent = new Intent(this, RetrieveActivityListView.class);
-                startActivity(intent);
+                DBHelper db12 = new DBHelper(RetrieveActivityListView.this);
+                ArrayList<Note> noteList12 = db12.getNotesInObjects();
+                db12.close();
+                al.clear();
+                al.addAll(noteList12);
+                adapter.notifyDataSetChanged();
             });
 
-            myBuilder.setNeutralButton("Delete", (dialog, which) -> {
-                db.deleteNote(position+1);
-                db.close();
-                finish();
-                Intent intent = new Intent(this, RetrieveActivityListView.class);
-                startActivity(intent);
+            myBuilder.setNeutralButton("Delete", (DialogInterface dialog, int which) -> {
+                db.deleteNote(position + 1);
+                DBHelper db12 = new DBHelper(RetrieveActivityListView.this);
+                ArrayList<Note> noteList12 = db12.getNotesInObjects();
+                db12.close();
+                al.clear();
+                al.addAll(noteList12);
+                adapter.notifyDataSetChanged();
+                db12.close();
             });
 
-            myBuilder.setNegativeButton("CANCEL", null);
+            myBuilder.setPositiveButton("Cancel", null);
             AlertDialog myDialog = myBuilder.create();
             myDialog.show();
-
-
         });
-        //Option: Implement dialog to edit a record
-        //Option: Implement context to delete a record
 
     }
 }

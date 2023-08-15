@@ -23,6 +23,16 @@ public class RetrieveActivityTextView extends AppCompatActivity {
 
         btnGetNotes = findViewById(R.id.btnGetTasks);
         tvResults = findViewById(R.id.tvResults);
+
+        DBHelper db = new DBHelper(RetrieveActivityTextView.this);
+        ArrayList<String> data = db.getNotesInStrings();
+        db.close();
+        String txt = "";
+        for (int i = 0; i < data.size(); i++) {
+            txt += (i+1) + ". " + data.get(i) + "\n";
+        }
+        tvResults.setText(txt);
+
         btnGetNotes.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -31,7 +41,6 @@ public class RetrieveActivityTextView extends AppCompatActivity {
                 db.close();
                 String txt = "";
                 for (int i = 0; i < data.size(); i++) {
-//                    Log.d("Database Content", i +". "+data.get(i));
                     txt += (i+1) + ". " + data.get(i) + "\n";
                 }
                 tvResults.setText(txt);
