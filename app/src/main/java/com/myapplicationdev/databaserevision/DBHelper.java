@@ -44,8 +44,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void insertTask(String content, int priority){
         SQLiteDatabase db = this.getWritableDatabase();
-        //Todo complete this
-
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CONTENT, content);
+        values.put(COLUMN_PRIORITY, priority);
+        db.insert(TABLE_NOTE, null, values);
+        db.close();
     }
 
     public ArrayList<String> getNotesInStrings() {
@@ -59,7 +62,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 //data retrieval in String
-                //tasks.add(cursor.getString(0));
+                tasks.add(cursor.getString(1));
             } while (cursor.moveToNext());
         }
 
@@ -83,8 +86,11 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 //data retrieval in object
-
-                //notes.add(obj);
+                int id = cursor.getInt(0);
+                String content = cursor.getString(1);
+                int priority = cursor.getInt(2);
+                Note obj = new Note(id, content, priority);
+                notes.add(obj);
             } while (cursor.moveToNext());
         }
 
@@ -94,7 +100,25 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //Edit?
+    public int updateNote(Note data) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CONTENT, data.getContent());
+        String condition = COLUMN_ID + "= ?";
+        String[] args = {String.valueOf(data.getId())};
+        int result = db.update(TABLE_NOTE, values, condition, args);
+        db.close();
+        return result;
+    }
     //Delete?
+    public int deleteNote(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String condition = COLUMN_ID + "= ?";
+        String[] args = {String.valueOf(id)};
+        int result = db.delete(TABLE_NOTE, condition, args);
+        db.close();
+        return result;
+    }
 
 }
 
