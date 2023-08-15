@@ -101,13 +101,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //Edit?
-    public int updateNote(Note data) {
+    public int updateNote(int id, String content, int priority) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_CONTENT, data.getContent());
-        values.put(COLUMN_PRIORITY, data.getPriority());
+        values.put(COLUMN_CONTENT, content);
+        values.put(COLUMN_PRIORITY, priority);
         String condition = COLUMN_ID + "= ?";
-        String[] args = {String.valueOf(data.getId())};
+        String[] args = {Integer.toString(id)};
         int result = db.update(TABLE_NOTE, values, condition, args);
         db.close();
         return result;

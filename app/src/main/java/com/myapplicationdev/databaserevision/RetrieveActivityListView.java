@@ -36,6 +36,12 @@ public class RetrieveActivityListView extends AppCompatActivity {
         aa = new ArrayAdapter<Note>(RetrieveActivityListView.this, android.R.layout.simple_list_item_1, al);
         lv.setAdapter(aa);
 
+        DBHelper db = new DBHelper(RetrieveActivityListView.this);
+        ArrayList<Note> getNote = db.getNotesInObjects();
+        db.close();
+        aa.clear();
+        aa.addAll(getNote);
+        aa.notifyDataSetChanged();
         btnGetNotes.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -55,8 +61,11 @@ public class RetrieveActivityListView extends AppCompatActivity {
                         (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View viewDialog = inflater.inflate(R.layout.input_edit, null);
 
-                final EditText etContent = viewDialog.findViewById(R.id.et1);
-                final EditText etNumber = viewDialog.findViewById(R.id.et2);
+                EditText etContent = viewDialog.findViewById(R.id.et1);
+                etContent.setText(getNote.get(position).getContent());
+                EditText etNumber = viewDialog.findViewById(R.id.et2);
+                String priority = Integer.toString(getNote.get(position).getPriority());
+                etNumber.setText(priority);
 
                 AlertDialog.Builder myBuilder = new AlertDialog.Builder(RetrieveActivityListView.this);
                 myBuilder.setView(viewDialog);
@@ -67,9 +76,14 @@ public class RetrieveActivityListView extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         DBHelper db = new DBHelper(RetrieveActivityListView.this);
                         String newContent = etContent.getText().toString();
-                        String newNum = etNumber.getText().toString();
-
-                        }
+                        int newNum = Integer.parseInt(etNumber.getText().toString());
+                        db.updateNote(position, newContent, newNum);
+                        ArrayList<Note> getNote = db.getNotesInObjects();
+                        db.close();
+                        aa.clear();
+                        aa.addAll(getNote);
+                        aa.notifyDataSetChanged();
+                    }
                 });
 
                 myBuilder.setNegativeButton("CANCEL", null);

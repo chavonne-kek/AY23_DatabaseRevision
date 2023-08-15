@@ -2,7 +2,9 @@ package com.myapplicationdev.databaserevision;
 
 import androidx.annotation.NonNull;
 
-public class Note {
+import java.io.Serializable;
+
+public class Note implements Serializable{
     private int id;
     private String content;
     private int priority;
